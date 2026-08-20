@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node -e \"process.env.NODE_ENV='production'; import('./src/index.js')\"",
     "dev": "nodemon src/index.js"
   },
   "repository": {

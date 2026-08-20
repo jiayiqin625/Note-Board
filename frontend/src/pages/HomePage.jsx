@@ -4,6 +4,7 @@ import RateLimitedUI from "../components/RateLimitedUI";
 import toast from "react-hot-toast";
 import NoteCard from "../components/NoteCard";
 import NotesNotFound from "../components/NotesNotFound";
+import api from "../lib/axios";
 
 const HomePage = () => {
   const [isRateLimited, setIsRateLimited] = useState(false);
@@ -13,18 +14,13 @@ const HomePage = () => {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const res = await fetch("http://localhost:5000/");
-        if (!res.ok) {
-          const error = new Error(`Request failed with status ${res.status}`);
-          error.status = res.status;
-          throw error;
-        }
-        const data = await res.json();
+        const res = await api.get("/");
+        const data = res.data;
         console.log(data);
         setNotes(data);
         setIsRateLimited(false);
       } catch (error) {
-        if (error.status === 429) {
+        if (error.response?.status === 429) {
           setIsRateLimited(true);
           console.log("error");
         } else {

@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import toast from "react-hot-toast";
 import api from "../lib/axios";
 import { ArrowLeftIcon, LoaderIcon, Trash2Icon } from "lucide-react";
-import axios from "axios";
 
-const updatePage = () => {
+const UpdatePage = () => {
   const [note, setNote] = useState(null);
-  const [isRateLimited, setIsRateLimited] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -21,7 +19,12 @@ const updatePage = () => {
         const res = await api.get(`/${id}`);
         setNote(res.data.note);
       } catch (error) {
-        toast.error("RROR");
+        toast.error(
+          error.response?.status === 404
+            ? "Note not found"
+            : "Failed to load note",
+        );
+        navigate("/");
       } finally {
         setLoading(false);
       }
@@ -58,7 +61,7 @@ const updatePage = () => {
     setSaving(true);
 
     try {
-      await api.put(`/note/${id}`, note);
+      await api.put(`/${id}`, note);
       toast.success("Note Updated");
       navigate("/");
     } catch (error) {
@@ -134,4 +137,4 @@ const updatePage = () => {
   );
 };
 
-export default updatePage;
+export default UpdatePage;

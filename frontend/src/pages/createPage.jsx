@@ -2,10 +2,9 @@ import { ArrowLeftIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import axios from "axios";
 import api from "../lib/axios";
 
-const createPage = () => {
+const CreatePage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,7 +30,6 @@ const createPage = () => {
       navigate("/");
     } catch (error) {
       if (error.response?.status === 429) {
-        setIsRateLimited(true);
         toast.error("Too many requests");
       } else {
         toast.error("Failed to create note");
@@ -96,4 +94,4 @@ const createPage = () => {
   );
 };
 
-export default createPage;
+export default CreatePage;
